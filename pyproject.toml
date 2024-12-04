@@ -1,0 +1,10 @@
+[project]
+name = "examapps"
+version = "0.1.0"
+description = "Python web applications for various Exam Cell related tasks"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "openpyxl>=3.1.5",
+    "streamlit>=1.40.2",
+]
