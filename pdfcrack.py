@@ -5,7 +5,7 @@ import pikepdf
 
 
 uploaded_pdf = st.file_uploader("Password protected PDF file", type="pdf")
-password = st.text_input("Password to open PDF file", value="ACWPA7045H")
+password = st.text_input("Password to open PDF file")
 tmp_pdf_name = f"{str(uuid.uuid4())}.pdf"
 tmp_pdf_path = f"{tmp_pdf_name}"
 if st.button("Remove password"):
