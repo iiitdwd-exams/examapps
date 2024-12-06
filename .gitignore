@@ -15,3 +15,4 @@ uv.lock
 # Data files
 *.xlsx
 *.csv
+*.pdf
