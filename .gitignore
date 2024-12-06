@@ -12,3 +12,6 @@ wheels/
 # astral-uv lock file
 uv.lock
 
+# Data files
+*.xlsx
+*.csv
