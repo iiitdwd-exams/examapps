@@ -1,4 +1,5 @@
 from pathlib import Path
+import uuid
 import pandas as pd
 import streamlit as st
 
@@ -108,3 +109,24 @@ pivot_table = pivot_table.sort_values(
 display_df("#### Pivot Table", pivot_table, "students")
 
 st.write(f"{len(unique_df["code"].unique())} unique courses")
+
+tmp_fname = f"{str(uuid.uuid4())}.csv"
+unique_df.to_csv(tmp_fname, index=False)
+with open(tmp_fname, "rb") as csv_file:
+    btn = st.download_button(
+        label="Download processed file",
+        data=csv_file,
+        file_name=f"{Path(uploaded_file.name).stem}.csv",
+        mime="text/csv",
+    )
+tmp_fpath = Path(tmp_fname)
+if tmp_fpath.exists():
+    tmp_fpath.unlink()
+
+students = unique_df["roll_no"].unique()
+for index, row in unique_df.iterrows():
+    student_df = unique_df[unique_df["roll_no"] == row["roll_no"]]
+    name = student_df.iloc[0, 1]
+    roll_no = student_df.iloc[0, 0]
+    st.write(f"{name} ({roll_no}) {roll_no}_{name.replace(' ', '_')}.xlsx")
+    st.dataframe(student_df[["code", "course"]])
