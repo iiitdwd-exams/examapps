@@ -124,9 +124,10 @@ if tmp_fpath.exists():
     tmp_fpath.unlink()
 
 students = unique_df["roll_no"].unique()
-for index, row in unique_df.iterrows():
-    student_df = unique_df[unique_df["roll_no"] == row["roll_no"]]
+grouped = unique_df.groupby('roll_no')
+chunks = [group for _, group in grouped]
+for student_df in chunks:
     name = student_df.iloc[0, 1]
     roll_no = student_df.iloc[0, 0]
-    st.write(f"{name} ({roll_no}) {roll_no}_{name.replace(' ', '_')}.xlsx")
+    st.write(f"{name} ({roll_no}) {roll_no.lower()}_{name.lower().replace(' ', '_')}.xlsx")
     st.dataframe(student_df[["code", "course"]])
