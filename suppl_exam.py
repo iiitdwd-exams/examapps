@@ -2,6 +2,7 @@ from pathlib import Path
 import uuid
 import pandas as pd
 import streamlit as st
+from excel_protectcell import protect_cells
 
 
 def display_df(header: str, df: pd.DataFrame, label="rows"):
@@ -14,10 +15,21 @@ uploaded_file = st.file_uploader("F List in .xlsx or .csv format", ["xlsx", "csv
 if uploaded_file is not None:
     fname = uploaded_file.name
     suffix = Path(fname).suffix
+    cols = [
+        "Roll No.",
+        "Name",
+        "Acad Period",
+        "Code",
+        "Course",
+        "Credits",
+        "Grade",
+        "Degree",
+        "Remarks",
+    ]
     if suffix == ".xlsx":
-        df = pd.read_excel(uploaded_file)
+        df = pd.read_excel(uploaded_file, usecols=cols)
     else:
-        df = pd.read_csv(uploaded_file)
+        df = pd.read_csv(uploaded_file, usecols=cols)
     display_df("#### Raw Data", df)
 else:
     st.stop()
@@ -108,7 +120,13 @@ pivot_table = pivot_table.sort_values(
 ).reset_index(drop=True)
 display_df("#### Pivot Table", pivot_table, "students")
 
-st.write(f"{len(unique_df["code"].unique())} unique courses")
+unique_courses = unique_df.drop_duplicates(
+    subset=["code", "end_year", "end_month"]
+).sort_values(by=["code", "end_year", "end_month"])
+unique_courses[["code", "course", "acad_period"]].to_excel(
+    "suppl_exam_course_list.xlsx", index=False
+)
+st.write(f"{len(unique_courses)} unique course and academic periods")
 
 tmp_fname = f"{str(uuid.uuid4())}.csv"
 unique_df.to_csv(tmp_fname, index=False)
@@ -127,9 +145,15 @@ students = unique_df["roll_no"].unique()
 grouped = unique_df.groupby("roll_no")
 chunks = [group for _, group in grouped]
 for student_df in chunks:
+    student_df = student_df.sort_values(by=["end_year", "end_month", "code"])
+    xlsx_df = student_df[
+        ["roll_no", "name", "code", "course", "credits", "acad_period"]
+    ].copy()
+    xlsx_df["register"] = 0
     name = student_df.iloc[0, 1]
     roll_no = student_df.iloc[0, 0]
-    st.write(
-        f"{name} ({roll_no}) {roll_no.lower()}_{name.lower().replace(' ', '_')}.xlsx"
-    )
-    st.dataframe(student_df[["roll_no", "name", "code", "course"]])
+    xlsx_fname = f"{roll_no.lower()}.xlsx"
+    st.write(f"{name} ({roll_no}) {xlsx_fname}")
+    st.dataframe(xlsx_df)
+    xlsx_df.to_excel(xlsx_fname, index=False)
+    protect_cells(xlsx_fname)
