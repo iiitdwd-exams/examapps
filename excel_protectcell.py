@@ -1,4 +1,3 @@
-import pandas as pd
 import openpyxl as xl
 from openpyxl.utils import get_column_letter
 from openpyxl.styles import Protection
@@ -43,7 +42,6 @@ def protect_cells(fname):
                         max_length = width
                 except Exception as e:
                     print(f"Exception: {e}")
-            print(f"{column}: {max_length}")
             adjusted_width = max_length + 2
             ws.column_dimensions[column].width = adjusted_width
         ws.protection.set_password("secret")
