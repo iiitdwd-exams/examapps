@@ -3,6 +3,7 @@ import uuid
 import pandas as pd
 import streamlit as st
 from excel_protectcell import protect_cells
+import zipfile
 
 
 def display_df(header: str, df: pd.DataFrame, label="rows"):
@@ -144,6 +145,7 @@ if tmp_fpath.exists():
 students = unique_df["roll_no"].unique()
 grouped = unique_df.groupby("roll_no")
 chunks = [group for _, group in grouped]
+xlsx_file_list = []
 for student_df in chunks:
     student_df = student_df.sort_values(by=["end_year", "end_month", "code"])
     xlsx_df = student_df[
@@ -156,4 +158,20 @@ for student_df in chunks:
     st.write(f"{name} ({roll_no}) {xlsx_fname}")
     st.dataframe(xlsx_df)
     xlsx_df.to_excel(xlsx_fname, index=False)
+    xlsx_file_list.append(xlsx_fname)
     protect_cells(xlsx_fname)
+
+zip_fname = Path(uploaded_file.name).with_suffix(".zip").name
+with zipfile.ZipFile(zip_fname, mode="w") as archive:
+    for fname in xlsx_file_list:
+        archive.write(fname)
+
+with open(zip_fname, "rb") as f:
+    st.download_button(
+        label="Download Zip archive",
+        data=f,
+        file_name=zip_fname,
+        mime="application/zip",
+    )
+for fname in xlsx_file_list:
+    Path(fname).unlink()

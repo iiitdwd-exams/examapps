@@ -17,3 +17,6 @@ uv.lock
 *.csv
 *.pdf
 *.PDF
+.zip
+.ZIP
+
