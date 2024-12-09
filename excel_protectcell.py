@@ -1,19 +1,6 @@
-import pandas as pd
 import openpyxl as xl
 from openpyxl.utils import get_column_letter
 from openpyxl.styles import Protection
-
-# df = pd.read_csv("FList_2024_05.csv")
-# g = df.groupby("roll_no")
-# chunks = [group for _, group in g]
-# x = chunks[1].copy()
-# x["register"] = 0
-# r = x.iloc[0, 0].lower()
-# n = x.iloc[0, 1].lower().replace(" ", "_")
-# fname = f"{r}_{n}.xlsx"
-# x.loc[:, ["roll_no", "name", "code", "course", "credits", "register"]].to_excel(
-#     fname, index=False
-# )
 
 
 def protect_cells(fname):
