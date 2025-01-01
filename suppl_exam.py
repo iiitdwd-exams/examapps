@@ -25,7 +25,7 @@ if uploaded_file is not None:
         "Credits",
         "Grade",
         "Degree",
-        "Remarks",
+        # "Remarks",
     ]
     if suffix == ".xlsx":
         df = pd.read_excel(uploaded_file, usecols=cols)
@@ -63,7 +63,7 @@ def split_acad_period(df):
         "credits",
         "grade",
         "degree",
-        "remarks",
+        # "remarks",
     ]
     # Regular expression to extract the data (accounting for optional spaces around the hyphen)
     pattern = r"(\w+)(?:\s+(\d{4}))?\s*-\s*(\w+)\s+(\d{4})"
@@ -125,7 +125,7 @@ unique_courses = unique_df.drop_duplicates(
     subset=["code", "end_year", "end_month"]
 ).sort_values(by=["code", "end_year", "end_month"])
 unique_courses[["code", "course", "acad_period"]].to_excel(
-    "suppl_exam_course_list.xlsx", index=False
+    f"{Path(uploaded_file.name).stem}_Courselist.xlsx", index=False
 )
 st.write(f"{len(unique_courses)} unique course and academic periods")
 
