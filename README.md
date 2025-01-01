@@ -1,4 +1,4 @@
-`examapps`
+# `examapps`
 
 `examapps` is intended to be a collection of streamlet apps bound by a navigation page. Each app is meant to solve a simple but independent problem. At present, there are two apps:
 
