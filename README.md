@@ -11,7 +11,7 @@ In time, more apps are expected to be added.
 ### Input File
 The input file can be either a `.xlsx` or a `.csv` file. It **must** contain columns withese exact names, which will be renamed as indicated.
 
-**Required column names:* "Roll No.", "Name", "Acad Period", "Code", "Course", "Credits", "Grade", "Degree". Columns can be in any order.
+**Required column names:* "Roll No.", "Name", "Acad Period", "Code", "Course", "Credits", "Grade", "Degree". Note the period (`.`) at the end of "Roll No.". Columns can be in any order.
 
 **New names for these columns in the output file:" "roll_no", "name", "acad_period", "code", "course", "credits", "grade", "degree", respectively.
 
