@@ -19,7 +19,11 @@ pdfcrack_page = st.Page(
     icon=":material/no_encryption:",
 )
 
-pages = [home_page, suppl_exam_page, pdfcrack_page]
+apaar_page = st.Page(
+    "apaar_report.py", title="Prepare APAAR ID Report", icon=":material/summarize:"
+)
+
+pages = [home_page, suppl_exam_page, pdfcrack_page, apaar_page]
 page_dict = {"IIIT Dharwad": pages}
 pg = st.navigation(page_dict)
 pg.run()
