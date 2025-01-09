@@ -3,7 +3,8 @@ import math
 from pathlib import Path
 from datetime import datetime
 import pandas as pd
-
+from jinja2 import Environment, FileSystemLoader
+from markdown_it import MarkdownIt
 # from pandas import DataFrame
 import streamlit as st
 
@@ -14,6 +15,9 @@ apaar_pattern = re.compile(r"^[0-9]{12}$")
 
 academic_programs = ["CS", "DS", "EC"]
 max_number = 175
+
+
+env = Environment(loader=FileSystemLoader("./templates"))
 
 
 def get_current_year():
@@ -160,12 +164,14 @@ def report_reg_no(reg_no: str):
         st.stop()
 
 
-def prepare_message():
-    s = """Dear {name} ({reg_no}),
-
-Following is the verification of the data submitted by you via Google Form:
-
-"""
+def prepare_html_message(data: dict[str, str]):
+    env = Environment(loader=FileSystemLoader("./templates"))
+    tpl = env.get_template("email_tpl.md")
+    md_content = tpl.render(data)
+    md = MarkdownIt()
+    html_content = md.render(md_content)
+    print(html_content)
+    return html_content
 
 
 st.header("APAAR ID Report")
